@@ -1,4 +1,5 @@
 using FluentAssertions;
+using NSubstitute;
 using PublicTransportCrawler.Vehicles;
 
 namespace PublicTransportCrawler.UnitTests.Vehicles;
@@ -7,11 +8,13 @@ namespace PublicTransportCrawler.UnitTests.Vehicles;
 public class VehicleServiceTests
 {
     private IVehicleService _uut;
-    
+    private IHttpClientFactory _httpClientFactory;
+
     [SetUp]
     public void SetUp()
     {
-        _uut = new VehicleService();
+        _httpClientFactory = Substitute.For<IHttpClientFactory>();
+        _uut = new VehicleService(_httpClientFactory);
     }
 
     [Test]

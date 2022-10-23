@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -8,30 +9,31 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using PublicTransportCrawler.Vehicles;
 
 namespace PublicTransportCrawler
 {
     [ExcludeFromCodeCoverage]
-    public static class PublicTransportCrawler
+    public class PublicTransportCrawler
     {
-        [FunctionName("PublicTransportCrawler")]
-        public static async Task<IActionResult> Run(
+        private IVehicleService _vehicleService;
+        private readonly HttpClient _client;
+
+        public PublicTransportCrawler(IHttpClientFactory httpClientFactory, IVehicleService service)
+        {
+            this._client = httpClientFactory.CreateClient();
+            this._vehicleService = service;
+        }
+
+        [FunctionName("MyHttpTrigger")]
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            var response = await _client.GetAsync("https://microsoft.com");
+            var result = await _vehicleService.GetAllVehicles();
 
-            string name = req.Query["name"];
-
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
-
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
-
-            return new OkObjectResult(responseMessage);
+            return new OkObjectResult("Response from function with injected dependencies.");
         }
     }
 }

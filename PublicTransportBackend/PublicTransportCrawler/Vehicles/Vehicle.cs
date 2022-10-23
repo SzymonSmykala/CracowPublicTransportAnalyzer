@@ -1,5 +1,5 @@
 namespace PublicTransportCrawler.Vehicles;
 
-internal class Vehicle
+public class Vehicle
 {
 }
