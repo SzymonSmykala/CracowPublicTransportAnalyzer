@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicTransportBackend", "PublicTransportBackend.csproj", "{D960102E-1F30-4292-A44F-15182726CCAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicTransportCrawler", "PublicTransportCrawler\PublicTransportCrawler.csproj", "{761B7AAC-4741-462D-9754-E081A1AE5CEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicTransportCrawler.UnitTests", "PublicTransportCrawler.UnitTests\PublicTransportCrawler.UnitTests.csproj", "{1B6FD781-36D4-4DC7-95D9-0986584EDC31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +10,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D960102E-1F30-4292-A44F-15182726CCAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D960102E-1F30-4292-A44F-15182726CCAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D960102E-1F30-4292-A44F-15182726CCAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D960102E-1F30-4292-A44F-15182726CCAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{761B7AAC-4741-462D-9754-E081A1AE5CEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{761B7AAC-4741-462D-9754-E081A1AE5CEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{761B7AAC-4741-462D-9754-E081A1AE5CEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{761B7AAC-4741-462D-9754-E081A1AE5CEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B6FD781-36D4-4DC7-95D9-0986584EDC31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B6FD781-36D4-4DC7-95D9-0986584EDC31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B6FD781-36D4-4DC7-95D9-0986584EDC31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B6FD781-36D4-4DC7-95D9-0986584EDC31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

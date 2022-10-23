@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -8,8 +9,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace PublicTransportBackend
+namespace PublicTransportCrawler
 {
+    [ExcludeFromCodeCoverage]
     public static class PublicTransportCrawler
     {
         [FunctionName("PublicTransportCrawler")]
