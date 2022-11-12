@@ -16,7 +16,7 @@ namespace PublicTransportCrawler
     [ExcludeFromCodeCoverage]
     public class PublicTransportCrawler
     {
-        private IVehicleService _vehicleService;
+        private readonly IVehicleService _vehicleService;
         private readonly HttpClient _client;
 
         public PublicTransportCrawler(IHttpClientFactory httpClientFactory, IVehicleService service)
