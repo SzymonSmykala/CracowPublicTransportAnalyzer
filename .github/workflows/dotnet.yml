@@ -37,9 +37,11 @@ jobs:
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       - name: build
+        working-directory: PublicTransportBackend
         shell: powershell
         run: dotnet build
       - name: Tests
+        working-directory: PublicTransportBackend
         shell: powershell
         run: dotnet test
       - name: Build and analyze
