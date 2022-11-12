@@ -10,22 +10,19 @@ namespace PublicTransportCrawler.Vehicles;
 public class VehicleService : IVehicleService
 {
     private readonly HttpClient _httpClient;
+    private readonly IVehicleRequestFactory _vehicleRequestFactory;
 
-    public VehicleService(IHttpClientFactory httpClientFactory)
+    public VehicleService(IHttpClientFactory httpClientFactory, IVehicleRequestFactory vehicleRequestFactory)
     {
+        _vehicleRequestFactory = vehicleRequestFactory;
         _httpClient = httpClientFactory.CreateClient();
     }
 
     public async Task<List<DTO.Vehicle>> GetAllVehicles()
     {
-        HttpRequestMessage request = new HttpRequestMessage();
-        request.RequestUri =
-            new Uri("http://www.ttss.krakow.pl/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles?positionType=CORRECTED");
-        request.Method = HttpMethod.Get;
+        var request = _vehicleRequestFactory.CreateGetTramRequest();
         var result =  await _httpClient.SendAsync(request);
         var resultAsString = await result.Content.ReadAsStringAsync();
-        Console.WriteLine(resultAsString);
-
         var vehicleResponse = VehicleResponse.FromJson(resultAsString);
         return vehicleResponse.Vehicles.ToList();
     }
