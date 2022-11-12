@@ -12,5 +12,6 @@ public class Startup : FunctionsStartup
         builder.Services.AddHttpClient();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddSingleton<IVehicleService, VehicleService>();
+        builder.Services.AddSingleton<IVehicleRequestFactory, VehicleRequestFactory>();
     }
 }
