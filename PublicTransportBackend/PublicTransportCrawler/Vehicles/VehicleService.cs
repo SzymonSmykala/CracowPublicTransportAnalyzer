@@ -1,20 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using PublicTransportCrawler.Vehicles.DTO;
 
 namespace PublicTransportCrawler.Vehicles;
 
 public class VehicleService : IVehicleService
 {
-    private HttpClient _httpClient;
+    private readonly HttpClient _httpClient;
 
     public VehicleService(IHttpClientFactory httpClientFactory)
     {
         _httpClient = httpClientFactory.CreateClient();
     }
 
-    public async Task<List<Vehicle>> GetAllVehicles()
+    public async Task<List<DTO.Vehicle>> GetAllVehicles()
     {
         HttpRequestMessage request = new HttpRequestMessage();
         request.RequestUri =
@@ -23,6 +25,8 @@ public class VehicleService : IVehicleService
         var result =  await _httpClient.SendAsync(request);
         var resultAsString = await result.Content.ReadAsStringAsync();
         Console.WriteLine(resultAsString);
-        return null;
+
+        var vehicleResponse = VehicleResponse.FromJson(resultAsString);
+        return vehicleResponse.Vehicles.ToList();
     }
 }

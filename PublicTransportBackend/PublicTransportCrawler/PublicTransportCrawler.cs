@@ -25,15 +25,13 @@ namespace PublicTransportCrawler
             this._vehicleService = service;
         }
 
-        [FunctionName("MyHttpTrigger")]
+        [FunctionName("GetListOfVehicles")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            var response = await _client.GetAsync("https://microsoft.com");
             var result = await _vehicleService.GetAllVehicles();
-
-            return new OkObjectResult("Response from function with injected dependencies.");
+            return new OkObjectResult(result);
         }
     }
 }
