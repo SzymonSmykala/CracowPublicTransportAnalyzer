@@ -9,7 +9,7 @@ class VehicleRequestFactory : IVehicleRequestFactory
     {
         var request = new HttpRequestMessage();
         request.RequestUri =
-            new Uri(Constants.GetTramsEndpoint);
+            new Uri(Constants.TramsEndpoint);
         request.Method = HttpMethod.Get;
         return request;
     }
