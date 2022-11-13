@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +46,10 @@ namespace PublicTransportCrawler
             ILogger log)
         {
             var result = await _stopService.GetRondoGrunwaldzkieDataAsync();
-            return new OkObjectResult(result);
+
+            var difference = result.Where(x => x.PlannedTime != x.ActualTime).ToList();
+            Console.WriteLine(difference.ToString());
+            return new OkObjectResult(difference);
         }
     }
 }

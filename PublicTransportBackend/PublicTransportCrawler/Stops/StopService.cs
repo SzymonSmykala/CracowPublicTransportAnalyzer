@@ -23,7 +23,6 @@ class StopService : IStopService
         };
         var response = await _httpClient.SendAsync(request);
         var responseAsString = await response.Content.ReadAsStringAsync();
-        Console.WriteLine(responseAsString);
         var converted = StopResponse.FromJson(responseAsString);
         return converted.Actual;
     }

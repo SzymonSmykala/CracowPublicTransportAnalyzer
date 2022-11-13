@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using JsonConverter = Newtonsoft.Json.JsonConverter;
 
 namespace PublicTransportCrawler.Stops
 {
@@ -33,7 +35,7 @@ namespace PublicTransportCrawler.Stops
         public string StopName { get; set; }
 
         [JsonProperty("stopShortName")]
-        [JsonConverter(typeof(ParseStringConverter))]
+        [Newtonsoft.Json.JsonConverter(typeof(ParseStringConverter))]
         public long StopShortName { get; set; }
     }
 
@@ -52,7 +54,7 @@ namespace PublicTransportCrawler.Stops
         public string Passageid { get; set; }
 
         [JsonProperty("patternText")]
-        [JsonConverter(typeof(ParseStringConverter))]
+        [Newtonsoft.Json.JsonConverter(typeof(ParseStringConverter))]
         public long PatternText { get; set; }
 
         [JsonProperty("plannedTime")]
@@ -89,19 +91,22 @@ namespace PublicTransportCrawler.Stops
         public string Id { get; set; }
 
         [JsonProperty("name")]
-        [JsonConverter(typeof(ParseStringConverter))]
+        [Newtonsoft.Json.JsonConverter(typeof(ParseStringConverter))]
         public long Name { get; set; }
 
         [JsonProperty("routeType")]
         public string RouteType { get; set; }
 
         [JsonProperty("shortName")]
-        [JsonConverter(typeof(ParseStringConverter))]
+        [Newtonsoft.Json.JsonConverter(typeof(ParseStringConverter))]
         public long ShortName { get; set; }
     }
 
-    public enum Status { Departed, Planned, Predicted,
-        UNKNOWN
+    public enum Status { 
+        Departed,
+        Planned,
+        Predicted,
+        Unknown
     };
 
     public partial class StopResponse
@@ -177,7 +182,7 @@ namespace PublicTransportCrawler.Stops
                 case "PREDICTED":
                     return Status.Predicted;
                 default:
-                    return Status.UNKNOWN;
+                    return Status.Unknown;
             }
         }
 
