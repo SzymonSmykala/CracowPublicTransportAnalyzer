@@ -1,6 +1,7 @@
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using PublicTransportCrawler;
+using PublicTransportCrawler.Stops;
 using PublicTransportCrawler.Vehicles;
 
 [assembly: FunctionsStartup(typeof(Startup))]
@@ -13,5 +14,6 @@ public class Startup : FunctionsStartup
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddSingleton<IVehicleService, VehicleService>();
         builder.Services.AddSingleton<IVehicleRequestFactory, VehicleRequestFactory>();
+        builder.Services.AddSingleton<IStopService, StopService>();
     }
 }

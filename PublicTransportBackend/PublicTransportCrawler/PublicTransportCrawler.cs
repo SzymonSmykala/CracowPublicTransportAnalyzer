@@ -9,6 +9,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using PublicTransportCrawler.Stops;
 using PublicTransportCrawler.Vehicles;
 
 namespace PublicTransportCrawler
@@ -17,12 +18,16 @@ namespace PublicTransportCrawler
     public class PublicTransportCrawler
     {
         private readonly IVehicleService _vehicleService;
+        private readonly IStopService _stopService;
         private readonly HttpClient _client;
 
-        public PublicTransportCrawler(IHttpClientFactory httpClientFactory, IVehicleService service)
+        public PublicTransportCrawler(IHttpClientFactory httpClientFactory,
+            IVehicleService service,
+            IStopService stopService)
         {
             this._client = httpClientFactory.CreateClient();
             this._vehicleService = service;
+            _stopService = stopService;
         }
 
         [FunctionName("GetListOfVehicles")]
@@ -31,6 +36,15 @@ namespace PublicTransportCrawler
             ILogger log)
         {
             var result = await _vehicleService.GetAllVehicles();
+            return new OkObjectResult(result);
+        }
+        
+        [FunctionName("GetStopData")]
+        public async Task<IActionResult> GetStopData(
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            ILogger log)
+        {
+            var result = await _stopService.GetRondoGrunwaldzkieDataAsync();
             return new OkObjectResult(result);
         }
     }
