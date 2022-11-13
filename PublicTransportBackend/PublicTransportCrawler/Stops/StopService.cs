@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using PublicTransportCrawler.Stops.DTO;
 
 namespace PublicTransportCrawler.Stops;
 
