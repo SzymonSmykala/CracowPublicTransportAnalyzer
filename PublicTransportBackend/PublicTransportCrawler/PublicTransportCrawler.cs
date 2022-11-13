@@ -56,7 +56,7 @@ namespace PublicTransportCrawler
                 try
                 {
                     var diff = _delayCalculator.Execute(x);
-                    Console.WriteLine($"Diff in minutes: {diff.TotalMinutes}");
+                    Console.WriteLine($"Delay in minutes: {diff.TotalMinutes} | Line: {x.PatternText} | Direction: {x.Direction} ");
                 }
                 catch(Exception e)
                 {
