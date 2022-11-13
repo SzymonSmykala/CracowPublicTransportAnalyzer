@@ -9,6 +9,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using PublicTransportCrawler.Stops;
+using PublicTransportCrawler.Stops.Adapters;
 using PublicTransportCrawler.Vehicles;
 
 namespace PublicTransportCrawler
@@ -18,15 +19,18 @@ namespace PublicTransportCrawler
     {
         private readonly IVehicleService _vehicleService;
         private readonly IStopService _stopService;
+        private readonly IDelayCalculator _delayCalculator;
         private readonly HttpClient _client;
 
         public PublicTransportCrawler(IHttpClientFactory httpClientFactory,
             IVehicleService service,
-            IStopService stopService)
+            IStopService stopService,
+            IDelayCalculator delayCalculator)
         {
             this._client = httpClientFactory.CreateClient();
             this._vehicleService = service;
             _stopService = stopService;
+            _delayCalculator = delayCalculator;
         }
 
         [FunctionName("GetListOfVehicles")]
@@ -51,14 +55,7 @@ namespace PublicTransportCrawler
             {
                 try
                 {
-                    Console.WriteLine(x.ActualTime);
-                    var actualTime = new TimeSpan(int.Parse(x.ActualTime.Split(':')[0]), 
-                        int.Parse(x.ActualTime.Split(':')[1]),
-                        0);
-                    var plannedTime = new TimeSpan(int.Parse(x.PlannedTime.Split(':')[0]), 
-                        int.Parse(x.PlannedTime.Split(':')[1]),
-                        0);
-                    var diff = actualTime - plannedTime;
+                    var diff = _delayCalculator.Execute(x);
                     Console.WriteLine($"Diff in minutes: {diff.TotalMinutes}");
                 }
                 catch(Exception e)
