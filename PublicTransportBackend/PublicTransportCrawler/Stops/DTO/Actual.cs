@@ -11,6 +11,9 @@ public class Actual
     public string Direction { get; set; }
 
     [JsonProperty("mixedTime")]
+    /*
+     * MixedTime - time to departure (example "10 %UNIT_MIN%") 
+     */
     public string MixedTime { get; set; }
 
     [JsonProperty("passageid")]

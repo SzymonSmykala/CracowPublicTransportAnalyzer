@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -47,8 +48,29 @@ namespace PublicTransportCrawler
         {
             var result = await _stopService.GetRondoGrunwaldzkieDataAsync();
 
-            var difference = result.Where(x => x.PlannedTime != x.ActualTime).ToList();
-            Console.WriteLine(difference.ToString());
+            var difference = result.Where(x => !string.IsNullOrEmpty(x.ActualTime)).ToList();
+            
+            difference.ForEach(x =>
+            {
+                try
+                {
+                    Console.WriteLine(x.ActualTime);
+                    var actualTime = new TimeSpan(int.Parse(x.ActualTime.Split(':')[0]), 
+                        int.Parse(x.ActualTime.Split(':')[1]),
+                        0);
+                    var plannedTime = new TimeSpan(int.Parse(x.PlannedTime.Split(':')[0]), 
+                        int.Parse(x.PlannedTime.Split(':')[1]),
+                        0);
+                    var diff = actualTime - plannedTime;
+                    Console.WriteLine($"Diff in minutes: {diff.TotalMinutes}");
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine($"Message: {e.Message}");
+                    Console.WriteLine($"Actual: {x.ActualTime} | Planned: {x.PlannedTime}");
+                }
+            
+            });
             return new OkObjectResult(difference);
         }
     }
