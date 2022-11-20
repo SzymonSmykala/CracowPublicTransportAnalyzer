@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PublicTransportCrawler;
 using PublicTransportCrawler.Storage.Repositories;
+using PublicTransportCrawler.Stops;
+using PublicTransportCrawler.Stops.Adapters;
 using PublicTransportCrawler.Vehicles;
 
 [assembly: FunctionsStartup(typeof(Startup))]
@@ -19,6 +21,8 @@ public class Startup : FunctionsStartup
         
         var configuration = BuildConfiguration(builder.GetContext().ApplicationRootPath);
         builder.Services.AddAppConfiguration(configuration);
+        builder.Services.AddSingleton<IStopService, StopService>();
+        builder.Services.AddSingleton<IDelayCalculator, DelayCalculator>();
     }
     
     private IConfiguration BuildConfiguration(string applicationRootPath)
