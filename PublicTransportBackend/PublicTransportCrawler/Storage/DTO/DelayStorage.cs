@@ -9,4 +9,6 @@ public class DelayStorage
     public DateTime Timestamp { get; set; }
     public string StopId { get; set; }
     public string id { get; set; }
+    public long? LineNumber { get; set; }
+    public string Direction { get; set; }
 }

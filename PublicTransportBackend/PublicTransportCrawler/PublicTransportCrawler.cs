@@ -37,18 +37,17 @@ namespace PublicTransportCrawler
             _options = options.Value;
         }
 
-        [FunctionName("GetListOfVehicles")]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
-        {
-            var result = await _vehicleService.GetAllVehicles();
-            await _delayDataRepository.InsertSampleDataAsync();
-            Console.WriteLine(_options);
-            await _delayDataRepository.AddOrUpdateDelayData("50", "xD", TimeSpan.FromMinutes(10));
-            return new OkObjectResult(result);
-        }
-        
+        // [FunctionName("GetListOfVehicles")]
+        // public async Task<IActionResult> Run(
+        //     [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+        //     ILogger log)
+        // {
+        //     var result = await _vehicleService.GetAllVehicles();
+        //     await _delayDataRepository.InsertSampleDataAsync();
+        //     Console.WriteLine(_options);
+        //     return new OkObjectResult(result);
+        // }
+        //
         [FunctionName("GetStopData")]
         public async Task<IActionResult> GetStopData(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
@@ -58,12 +57,13 @@ namespace PublicTransportCrawler
 
             var difference = result.Where(x => !string.IsNullOrEmpty(x.ActualTime)).ToList();
             
-            difference.ForEach(x =>
+            difference.ForEach( x =>
             {
                 try
                 {
                     var diff = _delayCalculator.Execute(x);
                     Console.WriteLine($"Delay in minutes: {diff.TotalMinutes} | Line: {x.PatternText} | Direction: {x.Direction} ");
+                    _delayDataRepository.AddOrUpdateDelayData(x.TripId, "3338", diff, x.PatternText, x.Direction).GetAwaiter().GetResult();
                 }
                 catch(Exception e)
                 {
@@ -73,6 +73,30 @@ namespace PublicTransportCrawler
             
             });
             return new OkObjectResult(difference);
+        }
+        
+        [FunctionName("DelayCrawler")]
+        public async Task Run([TimerTrigger("0 */10 * * * *")]TimerInfo myTimer, ILogger log)
+        {
+            var result = await _stopService.GetRondoGrunwaldzkieDataAsync();
+            
+            var difference = result.Where(x => !string.IsNullOrEmpty(x.ActualTime)).ToList();
+            
+            difference.ForEach( x =>
+            {
+                try
+                {
+                    var diff = _delayCalculator.Execute(x);
+                    Console.WriteLine($"Delay in minutes: {diff.TotalMinutes} | Line: {x.PatternText} | Direction: {x.Direction} ");
+                    _delayDataRepository.AddOrUpdateDelayData(x.TripId, "3338", diff, x.PatternText, x.Direction).GetAwaiter().GetResult();
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine($"Message: {e.Message}");
+                    Console.WriteLine($"Actual: {x.ActualTime} | Planned: {x.PlannedTime}");
+                }
+            
+            });
         }
     }
 }
