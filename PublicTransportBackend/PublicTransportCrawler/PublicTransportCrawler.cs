@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using PublicTransportCrawler.Stops;
+using PublicTransportCrawler.Stops.Adapters;
 using PublicTransportCrawler.Storage.Repositories;
 using PublicTransportCrawler.Vehicles;
 
@@ -25,11 +27,13 @@ namespace PublicTransportCrawler
         private readonly IDelayDataRepository _delayDataRepository;
         private MyServerOptions _options;
 
-        public PublicTransportCrawler(IHttpClientFactory httpClientFactory, IVehicleService service, IDelayDataRepository delayDataRepository, IOptions<MyServerOptions> options)
+        public PublicTransportCrawler(IHttpClientFactory httpClientFactory, IVehicleService service, IDelayDataRepository delayDataRepository, IOptions<MyServerOptions> options, IStopService stopService, IDelayCalculator delayCalculator)
         {
             this._client = httpClientFactory.CreateClient();
             this._vehicleService = service;
             _delayDataRepository = delayDataRepository;
+            _stopService = stopService;
+            _delayCalculator = delayCalculator;
             _options = options.Value;
         }
 
