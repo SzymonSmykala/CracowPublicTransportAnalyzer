@@ -5,9 +5,11 @@ using PublicTransportCrawler.Storage.DTO;
 
 namespace PublicTransportCrawler.Storage;
 
-public class DataContext : DbContext
+public partial class DataContext : DbContext
 {
     private readonly MyServerOptions _options;
+
+    public virtual DbSet<DelayStorage> DelayStorages { get; set; }
 
     public DataContext(MyServerOptions options)
     {

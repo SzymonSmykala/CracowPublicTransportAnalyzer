@@ -45,6 +45,7 @@ namespace PublicTransportCrawler
             var result = await _vehicleService.GetAllVehicles();
             await _delayDataRepository.InsertSampleDataAsync();
             Console.WriteLine(_options);
+            await _delayDataRepository.AddOrUpdateDelayData("50", "xD", TimeSpan.FromMinutes(10));
             return new OkObjectResult(result);
         }
         
