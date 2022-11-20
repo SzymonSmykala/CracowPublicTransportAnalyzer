@@ -1,25 +1,30 @@
+using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using PublicTransportCrawler.Storage.DTO;
 
 namespace PublicTransportCrawler.Storage;
 
 public class DataContext : DbContext
 {
-    private readonly IConfiguration _configuration;
+    private readonly MyServerOptions _options;
 
-    public DataContext(IConfiguration configuration)
+    public DataContext(MyServerOptions options)
     {
-        _configuration = configuration;
+        _options = options;
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseCosmos(
-            _configuration.GetSection("CosmosDbUri").Value,
-            _configuration.GetSection("CosmosDbKey").Value,
-            databaseName: _configuration.GetSection("DatabaseName").Value);
+            _options.CosmosDbUri,
+            _options.CosmosDbKey,
+            _options.DatabaseName);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasDefaultContainer("Store");
+        modelBuilder.HasDefaultContainer("data");
+        modelBuilder.Entity<DelayStorage>().HasPartitionKey("StopId");
+        modelBuilder.Entity<DelayStorage>().HasDiscriminator();
+        // modelBuilder.Entity<DelayStorage>().Property(x => x.id).pr
     }
 }
