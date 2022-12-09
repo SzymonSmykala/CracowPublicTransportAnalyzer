@@ -8,4 +8,5 @@ public static class Constants
     public static string TramsEndpoint => $"{TramsBaseEndpoint}/internetservice/geoserviceDispatcher/services/vehicleinfo/vehicles?positionType=CORRECTED";
     public static string RondoGrunwaldzkieBusesInfo =>
         $"{BusesBaseEndpoint}/internetservice/services/passageInfo/stopPassages/stop?stop=3338";
+    public static string BusesInfoEndpoint => $"{BusesBaseEndpoint}/internetservice/services/passageInfo/stopPassages/stop?stop=";
 }
