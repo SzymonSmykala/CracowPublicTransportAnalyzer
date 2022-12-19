@@ -6,6 +6,8 @@ using PublicTransportCrawler.Storage.Repositories;
 using PublicTransportCrawler.Stops;
 using PublicTransportCrawler.Stops.Adapters;
 using PublicTransportCrawler.Vehicles;
+using PublicTransportCrawler.Vehicles.Factories;
+using PublicTransportCrawler.Vehicles.Path;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 namespace PublicTransportCrawler;
@@ -22,7 +24,10 @@ public class Startup : FunctionsStartup
         var configuration = BuildConfiguration(builder.GetContext().ApplicationRootPath);
         builder.Services.AddAppConfiguration(configuration);
         builder.Services.AddSingleton<IStopService, StopService>();
+        builder.Services.AddSingleton<ICurrentVehicleStateFacade, CurrentVehicleStateFacade>();
         builder.Services.AddSingleton<IDelayCalculator, DelayCalculator>();
+        builder.Services.AddSingleton<IVehiclePathService, VehiclePathService>();
+        builder.Services.AddSingleton<IStopDataRequestFactory, StopDataRequestFactory>();
     }
     
     private IConfiguration BuildConfiguration(string applicationRootPath)
@@ -36,7 +41,5 @@ public class Startup : FunctionsStartup
 
         return config;
     }
-    
-    
 }
 

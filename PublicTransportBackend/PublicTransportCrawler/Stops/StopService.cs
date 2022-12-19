@@ -33,6 +33,7 @@ internal class StopService : IStopService
     public async Task<List<Actual>> GetDataForStopByAsync(string stopId)
     {
         var request = _requestFactory.CreateStopDataRequest(stopId);
+        Console.WriteLine($"getting data for: {stopId}");
         var responseAsString = await GetResponseAsStringAsync(request);
         var converted = StopResponse.FromJson(responseAsString);
         return converted.Actual;

@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicTransportCrawler", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicTransportCrawler.UnitTests", "PublicTransportCrawler.UnitTests\PublicTransportCrawler.UnitTests.csproj", "{1B6FD781-36D4-4DC7-95D9-0986584EDC31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicTransport.FunctionalTests", "PublicTransport.FunctionalTests\PublicTransport.FunctionalTests.csproj", "{84C4F40D-32F3-4828-A0AB-91A587DBAE3E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{1B6FD781-36D4-4DC7-95D9-0986584EDC31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B6FD781-36D4-4DC7-95D9-0986584EDC31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B6FD781-36D4-4DC7-95D9-0986584EDC31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84C4F40D-32F3-4828-A0AB-91A587DBAE3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84C4F40D-32F3-4828-A0AB-91A587DBAE3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84C4F40D-32F3-4828-A0AB-91A587DBAE3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84C4F40D-32F3-4828-A0AB-91A587DBAE3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

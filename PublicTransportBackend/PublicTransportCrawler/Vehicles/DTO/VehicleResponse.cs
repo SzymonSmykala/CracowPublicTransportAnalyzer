@@ -35,7 +35,7 @@ namespace PublicTransportCrawler.Vehicles.DTO
         public long? Latitude { get; set; }
 
         [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonProperty("tripId", NullValueHandling = NullValueHandling.Ignore)]
         public string TripId { get; set; }
@@ -68,7 +68,7 @@ namespace PublicTransportCrawler.Vehicles.DTO
         public long X2 { get; set; }
     }
 
-    public enum Category { Tram };
+    public enum Category { Tram, Bus };
 
     public enum Color { The0Xf89F05 };
 
@@ -108,6 +108,10 @@ namespace PublicTransportCrawler.Vehicles.DTO
             if (value == "tram")
             {
                 return Category.Tram;
+            }
+            if (value == "bus")
+            {
+                return Category.Bus;
             }
             throw new Exception("Cannot unmarshal type Category");
         }

@@ -5,4 +5,6 @@ namespace PublicTransportCrawler.Vehicles;
 public interface IVehicleRequestFactory
 {
     HttpRequestMessage CreateGetTramRequest();
+    HttpRequestMessage CreateGetBusesRequest();
+    
 }
