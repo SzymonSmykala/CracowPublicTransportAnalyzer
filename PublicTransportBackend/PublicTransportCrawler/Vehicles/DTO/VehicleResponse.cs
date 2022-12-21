@@ -45,6 +45,11 @@ namespace PublicTransportCrawler.Vehicles.DTO
 
         [JsonProperty("longitude", NullValueHandling = NullValueHandling.Ignore)]
         public long? Longitude { get; set; }
+
+        public override string ToString()
+        {
+            return $"{nameof(Path)}: {Path}, {nameof(Name)}: {Name}, {nameof(TripId)}: {TripId}, {nameof(Category)}: {Category}";
+        }
     }
 
     public partial class Path
@@ -66,6 +71,8 @@ namespace PublicTransportCrawler.Vehicles.DTO
 
         [JsonProperty("x2")]
         public long X2 { get; set; }
+        
+        
     }
 
     public enum Category { Tram, Bus };

@@ -2,6 +2,7 @@ using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PublicTransportCrawler.Storage.DTO;
+using PublicTransportCrawler.Vehicles.Adapters;
 
 namespace PublicTransportCrawler.Storage;
 
@@ -27,6 +28,9 @@ public partial class DataContext : DbContext
         modelBuilder.HasDefaultContainer("data");
         modelBuilder.Entity<DelayStorage>().HasPartitionKey("StopId");
         modelBuilder.Entity<DelayStorage>().HasDiscriminator();
+
+        modelBuilder.Entity<VehicleDelayData>().HasDiscriminator();
+        modelBuilder.Entity<VehicleDelayData>().HasPartitionKey(nameof(VehicleDelayData.PartitionKey));
         // modelBuilder.Entity<DelayStorage>().Property(x => x.id).pr
     }
 }

@@ -71,7 +71,7 @@ namespace PublicTransportCrawler
                 {
                     var diff = _delayCalculator.Execute(x);
                     Console.WriteLine($"Delay in minutes: {diff.TotalMinutes} | Line: {x.PatternText} | Direction: {x.Direction} ");
-                    _delayDataRepository.AddOrUpdateDelayData(x.TripId, "3338", diff, x.PatternText, x.Direction).GetAwaiter().GetResult();
+                    _delayDataRepository.AddOrUpdateDelayDataAsync(x.TripId, "3338", diff, x.PatternText, x.Direction).GetAwaiter().GetResult();
                 }
                 catch(Exception e)
                 {

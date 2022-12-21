@@ -31,7 +31,7 @@ internal class DelayDataRepository : IDelayDataRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task AddOrUpdateDelayData(string tripId, string stopId, TimeSpan currentDelay, long lineNumber, string Direction)
+    public async Task AddOrUpdateDelayDataAsync(string tripId, string stopId, TimeSpan currentDelay, long lineNumber, string direction)
     {
         DelayStorage queried = await _context.DelayStorages.SingleOrDefaultAsync(x => x.TripId == tripId);
 
@@ -45,7 +45,7 @@ internal class DelayDataRepository : IDelayDataRepository
                 id = Guid.NewGuid().ToString(),
                 Timestamp = DateTime.UtcNow,
                 LineNumber = lineNumber,
-                Direction = Direction
+                Direction = direction
             });
         }
         else
