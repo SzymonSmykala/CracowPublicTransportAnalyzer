@@ -11,9 +11,9 @@ internal class VehicleDelayDataRepository : IVehicleDelayDataRepository
 {
     private readonly DataContext _context;
     private readonly IMapper _mapper;
-    public VehicleDelayDataRepository(IOptions<MyServerOptions> options, IMapper mapper)
+    public VehicleDelayDataRepository(IOptions<MyServerOptions> options, IAutoMapperConfiguration _autoMapperConfiguration)
     {
-        _mapper = mapper;
+        _mapper = new AutoMapperConfiguration().GetMapper();
         _context = new DataContext(options.Value);
     }
     
@@ -47,9 +47,9 @@ internal class VehicleDelayDataRepository : IVehicleDelayDataRepository
                     stopToEdit.DelayInMinutes = newStop.DelayInMinutes;
                 }
             }
+            _context.VehicleDelayDataStorage.Update(current);
         }
     
-        _context.VehicleDelayDataStorage.Update(current);
         await _context.SaveChangesAsync();
     }
 }

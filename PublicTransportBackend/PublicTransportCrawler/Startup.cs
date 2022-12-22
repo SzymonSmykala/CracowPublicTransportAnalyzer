@@ -5,6 +5,7 @@ using PublicTransportCrawler;
 using PublicTransportCrawler.Storage.Repositories;
 using PublicTransportCrawler.Stops;
 using PublicTransportCrawler.Stops.Adapters;
+using PublicTransportCrawler.Storage;
 using PublicTransportCrawler.Vehicles;
 using PublicTransportCrawler.Vehicles.Adapters;
 using PublicTransportCrawler.Vehicles.Factories;

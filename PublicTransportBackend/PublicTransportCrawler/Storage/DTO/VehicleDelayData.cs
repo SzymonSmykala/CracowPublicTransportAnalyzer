@@ -12,6 +12,6 @@ public class VehicleDelayStorage
     public string PartitionKey
     {
         get => TripId;
-        set => PartitionKey = value;
+        set => TripId = value;
     }
 }

@@ -3,7 +3,7 @@ using PublicTransportCrawler.Vehicles.Adapters;
 
 namespace PublicTransportCrawler.Storage;
 
-class AutoMapperConfiguration : IAutoMapperConfiguration
+internal class AutoMapperConfiguration : IAutoMapperConfiguration
 {
     private readonly MapperConfiguration _config;
 
