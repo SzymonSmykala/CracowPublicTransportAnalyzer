@@ -117,6 +117,14 @@ namespace PublicTransportCrawler
             List<VehicleDelayData> result = await _currentVehicleStateFacade.GetCurrentStateForAsync(173);
             return new OkObjectResult(result);
         }
+
+        [FunctionName("DelayCrawlerV2TimeTriggered")]
+        public async Task RunTriggerAsync([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer, ILogger log)
+        {
+            await _currentVehicleStateFacade.GetCurrentStateForAsync(173);
+            await _currentVehicleStateFacade.GetCurrentStateForAsync(194);
+            await _currentVehicleStateFacade.GetCurrentStateForAsync(307);
+        }
         
     }
 }
