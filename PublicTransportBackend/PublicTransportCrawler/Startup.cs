@@ -24,10 +24,11 @@ public class Startup : FunctionsStartup
         var configuration = BuildConfiguration(builder.GetContext().ApplicationRootPath);
         builder.Services.AddAppConfiguration(configuration);
         builder.Services.AddSingleton<IStopService, StopService>();
-        builder.Services.AddSingleton<ICurrentVehicleStateFacade, CurrentVehicleStateFacade>();
+        builder.Services.AddScoped<ICurrentVehicleStateFacade, CurrentVehicleStateFacade>();
         builder.Services.AddSingleton<IDelayCalculator, DelayCalculator>();
         builder.Services.AddSingleton<IVehiclePathService, VehiclePathService>();
         builder.Services.AddSingleton<IStopDataRequestFactory, StopDataRequestFactory>();
+        builder.Services.AddScoped<IVehicleDelayDataRepository, VehicleDelayDataRepository>();
     }
     
     private IConfiguration BuildConfiguration(string applicationRootPath)

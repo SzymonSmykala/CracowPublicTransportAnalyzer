@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
@@ -14,6 +15,7 @@ using PublicTransportCrawler.Stops;
 using PublicTransportCrawler.Stops.Adapters;
 using PublicTransportCrawler.Storage.Repositories;
 using PublicTransportCrawler.Vehicles;
+using PublicTransportCrawler.Vehicles.Adapters;
 
 namespace PublicTransportCrawler
 {
@@ -112,8 +114,8 @@ namespace PublicTransportCrawler
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            await _currentVehicleStateFacade.GetCurrentStateForAsync(194);
-            return new OkObjectResult("Fake OK");
+            List<VehicleDelayData> result = await _currentVehicleStateFacade.GetCurrentStateForAsync(173);
+            return new OkObjectResult(result);
         }
         
     }

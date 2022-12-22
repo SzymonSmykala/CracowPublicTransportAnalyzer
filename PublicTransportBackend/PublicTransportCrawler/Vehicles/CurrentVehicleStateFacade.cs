@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using PublicTransportCrawler.Stops;
 using PublicTransportCrawler.Stops.Adapters;
 using PublicTransportCrawler.Stops.DTO;
+using PublicTransportCrawler.Storage.Repositories;
 using PublicTransportCrawler.Vehicles.Adapters;
 using PublicTransportCrawler.Vehicles.Path;
 
@@ -15,20 +16,25 @@ internal class CurrentVehicleStateFacade : ICurrentVehicleStateFacade
     private readonly IVehicleService _vehicleService;
     private readonly IVehiclePathService _vehiclePathService;
     private readonly IStopService _stopService;
-    private IDelayCalculator _delayCalculator;
+    private readonly IDelayCalculator _delayCalculator;
+    private IVehicleDelayDataRepository _vehicleDelayDataRepository;
+
+    
 
     public CurrentVehicleStateFacade(IVehicleService vehicleService,
         IVehiclePathService vehiclePathService,
         IStopService stopService,
-        IDelayCalculator delayCalculator)
+        IDelayCalculator delayCalculator,
+        IVehicleDelayDataRepository vehicleDelayDataRepository)
     {
         _vehicleService = vehicleService;
         _vehiclePathService = vehiclePathService;
         _stopService = stopService;
         _delayCalculator = delayCalculator;
+        _vehicleDelayDataRepository = vehicleDelayDataRepository;
     }
 
-    public async Task GetCurrentStateForAsync(int lineNumber)
+    public async Task<List<VehicleDelayData>> GetCurrentStateForAsync(int lineNumber)
     {
         // Get all vehicles
         var allVehicles = await _vehicleService.GetAllBusesAsync();
@@ -36,24 +42,28 @@ internal class CurrentVehicleStateFacade : ICurrentVehicleStateFacade
 
         var queried = allVehicles.FindAll(x => x.Name != null && x.Name.Contains(lineNumber.ToString()));
         // Get timetables using tripIds
-        var one = queried[0];
 
+        var listOfResults = new List<VehicleDelayData>();
         foreach (var q in queried)
         {
-            var result = await CreateVehicleDelayData(one);
+            var result = await CreateVehicleDelayData(q, lineNumber);
+            // await _vehicleDelayDataRepository.AddAsync(result);
+            listOfResults.Add(result);
             Console.WriteLine(result);
         }
 
+        return listOfResults;
     }
 
-    private async Task<VehicleDelayData> CreateVehicleDelayData(DTO.Vehicle one )
+    private async Task<VehicleDelayData> CreateVehicleDelayData(DTO.Vehicle one, int lineNumber)
     {
         var path = await _vehiclePathService.GetPathForAsync(one.TripId);
         var vehicleDelayData = new VehicleDelayData
         {
-            Id = one.Id,
+            Id = Guid.NewGuid().ToString(),
             TripId = one.TripId,
-            Stops = new List<StopDelayData>()
+            Stops = new List<StopDelayData>(),
+            LineNumber = lineNumber.ToString(),
         };
 
         foreach (var actual in path.Actual)
@@ -70,6 +80,7 @@ internal class CurrentVehicleStateFacade : ICurrentVehicleStateFacade
                 stop.ActualTime = data.ActualTime;
                 stop.ScheduleTime = data.PlannedTime;
                 stop.DelayInMinutes = _delayCalculator.Execute(stop.ActualTime, stop.ScheduleTime);
+                vehicleDelayData.Direction = data.Direction;
             }
         });
 
