@@ -30,9 +30,9 @@ public partial class DataContext : DbContext
         modelBuilder.Entity<DelayStorage>().HasPartitionKey("StopId");
         modelBuilder.Entity<DelayStorage>().HasDiscriminator();
 
-        modelBuilder.Entity<VehicleDelayData>().HasDiscriminator();
-        modelBuilder.Entity<VehicleDelayData>().HasPartitionKey(nameof(VehicleDelayData.PartitionKey));
-        modelBuilder.Entity<VehicleDelayData>().ToContainer("vehicleDelay");
+        modelBuilder.Entity<VehicleDelayStorage>().HasDiscriminator();
+        modelBuilder.Entity<VehicleDelayStorage>().HasPartitionKey(nameof(VehicleDelayData.PartitionKey));
+        modelBuilder.Entity<VehicleDelayStorage>().ToContainer("vehicleDelay");
         // modelBuilder.Entity<DelayStorage>().Property(x => x.id).pr
     }
 }
