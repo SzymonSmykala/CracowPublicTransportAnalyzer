@@ -19,8 +19,6 @@ internal class CurrentVehicleStateFacade : ICurrentVehicleStateFacade
     private readonly IDelayCalculator _delayCalculator;
     private IVehicleDelayDataRepository _vehicleDelayDataRepository;
 
-    
-
     public CurrentVehicleStateFacade(IVehicleService vehicleService,
         IVehiclePathService vehiclePathService,
         IStopService stopService,
@@ -47,7 +45,7 @@ internal class CurrentVehicleStateFacade : ICurrentVehicleStateFacade
         foreach (var q in queried)
         {
             var result = await CreateVehicleDelayData(q, lineNumber);
-            // await _vehicleDelayDataRepository.AddAsync(result);
+            await _vehicleDelayDataRepository.AddOrUpdateAsync(result);
             listOfResults.Add(result);
             Console.WriteLine(result);
         }
