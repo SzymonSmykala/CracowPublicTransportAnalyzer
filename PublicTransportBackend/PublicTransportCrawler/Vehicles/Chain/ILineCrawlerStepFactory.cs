@@ -1,6 +1,8 @@
 namespace PublicTransportCrawler.Vehicles;
 
-public class ILineCrawlerStepFactory
+public interface ILineCrawlerStepFactory
 {
-    
+    IStep CreateGetAllBusesStep();
+    IStep CreateQueryVehiclesStep();
+    IStep CreateFetchDataAndSaveStep();
 }

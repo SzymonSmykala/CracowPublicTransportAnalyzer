@@ -2,15 +2,23 @@ using System.Threading.Tasks;
 
 namespace PublicTransportCrawler.Vehicles.Chain;
 
-public abstract class AbstractStep : IStep
+public abstract class AbstractStep : IStepAdder
 {
-    protected readonly IStep _next;
+    protected IStep Next;
 
     public async Task ExecuteAsync(CrawlingContext context)
     {
-        if (_next != null)
+        await ExecuteInnerAsync(context);
+        if (Next != null)
         {
-            await _next.ExecuteAsync(context);
+            await Next.ExecuteAsync(context);
         }
+    }
+
+    protected abstract Task ExecuteInnerAsync(CrawlingContext context);
+
+    public void AddNext(IStepAdder step)
+    {
+        Next = step;
     }
 }

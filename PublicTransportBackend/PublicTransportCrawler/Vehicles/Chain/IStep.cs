@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using PublicTransportCrawler.Vehicles.Chain;
 
 namespace PublicTransportCrawler.Vehicles;
 

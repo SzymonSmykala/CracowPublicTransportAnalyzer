@@ -1,6 +1,6 @@
 namespace PublicTransportCrawler.Vehicles.Chain;
 
-public interface IStepAdder
+public interface IStepAdder : IStep
 {
     void AddNext(IStepAdder step);
 }

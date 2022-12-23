@@ -2,5 +2,6 @@ namespace PublicTransportCrawler.Vehicles.Chain;
 
 public interface IChainBuilder
 {
-    void Add(IStep step);
+    void Add(IStepAdder step);
+    IStep Build();
 }
