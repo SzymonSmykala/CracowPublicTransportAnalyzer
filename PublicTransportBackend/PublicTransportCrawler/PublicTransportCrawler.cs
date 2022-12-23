@@ -124,19 +124,20 @@ namespace PublicTransportCrawler
             }
             catch(Exception e)
             {
-                log.LogError(e.Source);
+                log.LogError(e.ToString());
+                throw;
             }
 
             return new OkObjectResult("FAKE OK ");
         }
 
-        [FunctionName("DelayCrawlerV2TimeTriggered")]
-        public async Task RunTriggerAsync([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer, ILogger log)
-        {
-            // await _currentVehicleStateFacade.GetCurrentStateForAsync(173);
-            // await _currentVehicleStateFacade.GetCurrentStateForAsync(194);
-            // await _currentVehicleStateFacade.GetCurrentStateForAsync(307);
-        }
+        // [FunctionName("DelayCrawlerV2TimeTriggered")]
+        // public async Task RunTriggerAsync([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer, ILogger log)
+        // {
+        //     // await _currentVehicleStateFacade.GetCurrentStateForAsync(173);
+        //     // await _currentVehicleStateFacade.GetCurrentStateForAsync(194);
+        //     // await _currentVehicleStateFacade.GetCurrentStateForAsync(307);
+        // }
         
     }
 }

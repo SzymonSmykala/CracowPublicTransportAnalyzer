@@ -52,7 +52,8 @@ namespace PublicTransportCrawler.Vehicles.Path.DTO
     }
 
     public enum Status { Departed, Predicted,
-        Stopping
+        Stopping,
+        Planned
     };
 
     public partial class Path
@@ -95,8 +96,10 @@ namespace PublicTransportCrawler.Vehicles.Path.DTO
                     return Status.Predicted;
                 case "STOPPING":
                     return Status.Stopping;
+                case "PLANNED":
+                    return Status.Planned;
             }
-            throw new Exception("Cannot unmarshal type Status");
+            throw new Exception($"Cannot unmarshal type Status. The status: {value}");
         }
 
         public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)

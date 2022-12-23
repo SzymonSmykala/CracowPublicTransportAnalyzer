@@ -32,7 +32,7 @@ public class FetchDataAndSaveStep : AbstractStep
         {
             var result = await CreateVehicleDelayData(q, context.LineNumber);
             await _vehicleDelayDataRepository.AddOrUpdateAsync(result);
-            listOfResults.Add(result);
+            // listOfResults.Add(result);
             Console.WriteLine(result);
         }
     }
@@ -52,9 +52,10 @@ public class FetchDataAndSaveStep : AbstractStep
         {
             vehicleDelayData.Stops.Add(new StopDelayData(){StopId = actual.Stop.ShortName.ToString(), StopName = actual.Stop.Name});
         }
-        Parallel.ForEach(vehicleDelayData.Stops,  stop =>
+
+        var tasks = vehicleDelayData.Stops.Select(async stop =>
         {
-            var stopData = _stopService.GetDataForStopByAsync(stop.StopId).Result;
+            var stopData = await _stopService.GetDataForStopByAsync(stop.StopId);
             var data = stopData.FirstOrDefault(x => x.TripId == vehicleDelayData.TripId);
             if (data != null)
             {
@@ -64,7 +65,7 @@ public class FetchDataAndSaveStep : AbstractStep
                 vehicleDelayData.Direction = data.Direction;
             }
         });
-
+        await Task.WhenAll(tasks);
         return vehicleDelayData;
     }
 }

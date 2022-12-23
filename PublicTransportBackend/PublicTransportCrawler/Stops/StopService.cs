@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -30,11 +31,21 @@ internal class StopService : IStopService
         return converted.Actual;
     }
 
+    private readonly ConcurrentDictionary<string, StopResponse>
+        _stopDataCache = new();
+
     public async Task<List<Actual>> GetDataForStopByAsync(string stopId)
     {
+        if (_stopDataCache.ContainsKey(stopId))
+        {
+            return _stopDataCache[stopId].Actual;
+        }
+
         var request = _requestFactory.CreateStopDataRequest(stopId);
         var responseAsString = await GetResponseAsStringAsync(request);
         var converted = StopResponse.FromJson(responseAsString);
+        _stopDataCache[stopId] = converted;
+
         return converted.Actual;
     }
 
