@@ -1,8 +1,10 @@
+using PublicTransportCrawler.Vehicles.Chain;
+
 namespace PublicTransportCrawler.Vehicles;
 
 public interface ILineCrawlerStepFactory
 {
-    IStep CreateGetAllBusesStep();
-    IStep CreateQueryVehiclesStep();
-    IStep CreateFetchDataAndSaveStep();
+    IStepAdder CreateGetAllBusesStep();
+    IStepAdder CreateQueryVehiclesStep();
+    IStepAdder CreateFetchDataAndSaveStep();
 }

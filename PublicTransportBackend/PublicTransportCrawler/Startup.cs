@@ -8,6 +8,7 @@ using PublicTransportCrawler.Stops.Adapters;
 using PublicTransportCrawler.Storage;
 using PublicTransportCrawler.Vehicles;
 using PublicTransportCrawler.Vehicles.Adapters;
+using PublicTransportCrawler.Vehicles.Chain;
 using PublicTransportCrawler.Vehicles.Factories;
 using PublicTransportCrawler.Vehicles.Path;
 
@@ -30,8 +31,10 @@ public class Startup : FunctionsStartup
         builder.Services.AddSingleton<IDelayCalculator, DelayCalculator>();
         builder.Services.AddSingleton<IVehiclePathService, VehiclePathService>();
         builder.Services.AddSingleton<IStopDataRequestFactory, StopDataRequestFactory>();
-        builder.Services.AddScoped<IVehicleDelayDataRepository, VehicleDelayDataRepository>();
+        builder.Services.AddSingleton<IVehicleDelayDataRepository, VehicleDelayDataRepository>();
         builder.Services.AddAutoMapper(typeof(VehicleDelayData), typeof(VehicleDelayStorage));
+        builder.Services.AddSingleton<ILineCrawlerExecutor, LineCrawlerExecutor>();
+        builder.Services.AddSingleton<ILineCrawlerStepFactory, LineCrawlerStepFactory>();
     }
     
     private IConfiguration BuildConfiguration(string applicationRootPath)

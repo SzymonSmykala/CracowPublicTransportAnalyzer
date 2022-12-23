@@ -1,22 +1,29 @@
 using System.Threading.Tasks;
-using PublicTransportCrawler.Vehicles.Chain;
 
-namespace PublicTransportCrawler.Vehicles;
+namespace PublicTransportCrawler.Vehicles.Chain;
 
 internal class LineCrawlerExecutor : ILineCrawlerExecutor
 {
-    private ILineCrawlerStepFactory _factory;
+    private readonly ILineCrawlerStepFactory _stepFactory;
 
-    public LineCrawlerExecutor(ILineCrawlerStepFactory factory)
+    public LineCrawlerExecutor(ILineCrawlerStepFactory stepFactory)
     {
-        _factory = factory;
+        _stepFactory = stepFactory;
     }
 
     public async Task ExecuteAsync(string lineNumber)
     {
         var builder = new ChainBuilder();
-        var firstStep  = builder.Build();
-        var context = new CrawlingContext();
+        var firstStep = builder
+            .Add(_stepFactory.CreateGetAllBusesStep())
+            .Add(_stepFactory.CreateQueryVehiclesStep())
+            .Add(_stepFactory.CreateFetchDataAndSaveStep())
+            .Build();
+        
+        var context = new CrawlingContext
+        {
+            LineNumber = lineNumber
+        };
         await firstStep.ExecuteAsync(context);
     }
 }

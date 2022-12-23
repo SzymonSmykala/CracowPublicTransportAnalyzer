@@ -1,6 +1,7 @@
 using PublicTransportCrawler.Stops;
 using PublicTransportCrawler.Stops.Adapters;
 using PublicTransportCrawler.Storage.Repositories;
+using PublicTransportCrawler.Vehicles.Chain;
 using PublicTransportCrawler.Vehicles.Chain.Steps;
 using PublicTransportCrawler.Vehicles.Path;
 
@@ -27,17 +28,17 @@ internal class LineCrawlerStepFactory : ILineCrawlerStepFactory
         _vehicleDelayDataRepository = vehicleDelayDataRepository;
     }
 
-    public IStep CreateGetAllBusesStep()
+    public IStepAdder CreateGetAllBusesStep()
     {
         return new GetAllBusesStep(_vehicleService);
     }
 
-    public IStep CreateQueryVehiclesStep()
+    public IStepAdder CreateQueryVehiclesStep()
     {
         return new QueryVehiclesStep();
     }
 
-    public IStep CreateFetchDataAndSaveStep()
+    public IStepAdder CreateFetchDataAndSaveStep()
     {
         return new FetchDataAndSaveStep(_vehiclePathService, _stopService, _delayCalculator,
             _vehicleDelayDataRepository);

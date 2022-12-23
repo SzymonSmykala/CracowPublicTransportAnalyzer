@@ -29,6 +29,7 @@ namespace PublicTransportCrawler
         private readonly IDelayDataRepository _delayDataRepository;
         private readonly MyServerOptions _options;
         private readonly ICurrentVehicleStateFacade _currentVehicleStateFacade;
+        private ILineCrawlerExecutor _lineCrawlerExecutor;
 
         public PublicTransportCrawler(IHttpClientFactory httpClientFactory,
             IVehicleService service,
@@ -36,7 +37,8 @@ namespace PublicTransportCrawler
             IOptions<MyServerOptions> options,
             IStopService stopService,
             IDelayCalculator delayCalculator,
-            ICurrentVehicleStateFacade currentVehicleStateFacade)
+            ICurrentVehicleStateFacade currentVehicleStateFacade,
+            ILineCrawlerExecutor lineCrawlerExecutor)
         {
             this._client = httpClientFactory.CreateClient();
             this._vehicleService = service;
@@ -44,6 +46,7 @@ namespace PublicTransportCrawler
             _stopService = stopService;
             _delayCalculator = delayCalculator;
             _currentVehicleStateFacade = currentVehicleStateFacade;
+            _lineCrawlerExecutor = lineCrawlerExecutor;
             _options = options.Value;
         }
 
@@ -114,16 +117,25 @@ namespace PublicTransportCrawler
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            List<VehicleDelayData> result = await _currentVehicleStateFacade.GetCurrentStateForAsync(173);
-            return new OkObjectResult(result);
+            // List<VehicleDelayData> result = await _currentVehicleStateFacade.GetCurrentStateForAsync(173);
+            try
+            {
+                await _lineCrawlerExecutor.ExecuteAsync("173");
+            }
+            catch(Exception e)
+            {
+                log.LogError(e.Source);
+            }
+
+            return new OkObjectResult("FAKE OK ");
         }
 
         [FunctionName("DelayCrawlerV2TimeTriggered")]
         public async Task RunTriggerAsync([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer, ILogger log)
         {
-            await _currentVehicleStateFacade.GetCurrentStateForAsync(173);
-            await _currentVehicleStateFacade.GetCurrentStateForAsync(194);
-            await _currentVehicleStateFacade.GetCurrentStateForAsync(307);
+            // await _currentVehicleStateFacade.GetCurrentStateForAsync(173);
+            // await _currentVehicleStateFacade.GetCurrentStateForAsync(194);
+            // await _currentVehicleStateFacade.GetCurrentStateForAsync(307);
         }
         
     }
