@@ -4,7 +4,7 @@ internal class ChainBuilder : IChainBuilder
 {
     private IStepAdder _current;
     
-    public void Add(IStepAdder step)
+    public IChainBuilder Add(IStepAdder step)
     {
         if (_current == null)
         {
@@ -15,6 +15,8 @@ internal class ChainBuilder : IChainBuilder
             _current.AddNext(step);
             _current = step;
         }
+
+        return this;
     }
 
     public IStep Build()

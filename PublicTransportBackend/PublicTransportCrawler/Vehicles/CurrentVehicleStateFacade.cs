@@ -17,7 +17,7 @@ internal class CurrentVehicleStateFacade : ICurrentVehicleStateFacade
     private readonly IVehiclePathService _vehiclePathService;
     private readonly IStopService _stopService;
     private readonly IDelayCalculator _delayCalculator;
-    private IVehicleDelayDataRepository _vehicleDelayDataRepository;
+    private readonly IVehicleDelayDataRepository _vehicleDelayDataRepository;
 
     public CurrentVehicleStateFacade(IVehicleService vehicleService,
         IVehiclePathService vehiclePathService,
