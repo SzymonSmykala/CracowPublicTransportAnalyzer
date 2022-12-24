@@ -25,6 +25,11 @@ internal class DelayCalculator : IDelayCalculator
 
     public int Execute(string actualTime, string plannedTime)
     {
+        if (actualTime == null || plannedTime == null)
+        {
+            return 0;
+        }
+        
         var actual = new TimeSpan(int.Parse(actualTime.Split(':')[0]), 
             int.Parse(actualTime.Split(':')[1]),
             0);

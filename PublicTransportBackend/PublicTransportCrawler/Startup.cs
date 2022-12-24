@@ -2,10 +2,10 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PublicTransportCrawler;
+using PublicTransportCrawler.Adapters;
 using PublicTransportCrawler.Storage.Repositories;
 using PublicTransportCrawler.Stops;
 using PublicTransportCrawler.Stops.Adapters;
-using PublicTransportCrawler.Storage;
 using PublicTransportCrawler.Storage.Factories;
 using PublicTransportCrawler.Vehicles;
 using PublicTransportCrawler.Vehicles.Adapters;
@@ -39,7 +39,7 @@ public class Startup : FunctionsStartup
         builder.Services.AddAutoMapper(typeof(VehicleDelayData), typeof(VehicleDelayStorage));
         builder.Services.AddSingleton<ILineCrawlerExecutor, LineCrawlerExecutor>();
         builder.Services.AddSingleton<ILineCrawlerStepFactory, LineCrawlerStepFactory>();
-
+        builder.Services.AddSingleton<ITimeProvider, TimeProvider>();
     }
     
     private IConfiguration BuildConfiguration(string applicationRootPath)

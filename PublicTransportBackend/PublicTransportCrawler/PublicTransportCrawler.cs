@@ -112,34 +112,35 @@ namespace PublicTransportCrawler
         //     });
         // }
         
-        [FunctionName("DelayCrawlerV2")]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+        // [FunctionName("DelayCrawlerV2")]
+        // public async Task<IActionResult> Run(
+        //     [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+        //     ILogger log)
+        // {
+        //     var tasks = new List<Task>
+        //     {
+        //         _lineCrawlerExecutor.ExecuteAsync("173"),
+        //         _lineCrawlerExecutor.ExecuteAsync("194"),
+        //         _lineCrawlerExecutor.ExecuteAsync("307"),
+        //         _lineCrawlerExecutor.ExecuteAsync("182"),
+        //     };
+        //
+        //     await Task.WhenAll(tasks);
+        //     return new OkObjectResult("FAKE OK ");
+        // }
+
+        [FunctionName("DelayCrawlerV2TimeTriggered")]
+        public async Task RunTriggerAsync([TimerTrigger("*/5 4-22 * * *")] TimerInfo myTimer, ILogger log)
         {
-            // List<VehicleDelayData> result = await _currentVehicleStateFacade.GetCurrentStateForAsync(173);
             var tasks = new List<Task>
             {
                 _lineCrawlerExecutor.ExecuteAsync("173"),
                 _lineCrawlerExecutor.ExecuteAsync("194"),
                 _lineCrawlerExecutor.ExecuteAsync("307"),
                 _lineCrawlerExecutor.ExecuteAsync("182"),
-                _lineCrawlerExecutor.ExecuteAsync("304"),
-                _lineCrawlerExecutor.ExecuteAsync("503"),
-                _lineCrawlerExecutor.ExecuteAsync("130"),
             };
 
             await Task.WhenAll(tasks);
-            return new OkObjectResult("FAKE OK ");
         }
-
-        // [FunctionName("DelayCrawlerV2TimeTriggered")]
-        // public async Task RunTriggerAsync([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer, ILogger log)
-        // {
-        //     // await _currentVehicleStateFacade.GetCurrentStateForAsync(173);
-        //     // await _currentVehicleStateFacade.GetCurrentStateForAsync(194);
-        //     // await _currentVehicleStateFacade.GetCurrentStateForAsync(307);
-        // }
-        
     }
 }

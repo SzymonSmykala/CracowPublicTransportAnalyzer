@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace PublicTransportCrawler.Vehicles.Adapters;
@@ -14,4 +15,6 @@ public class VehicleDelayStorage
         get => TripId;
         set => TripId = value;
     }
+
+    public DateTime Timestamp { get; set; }
 }

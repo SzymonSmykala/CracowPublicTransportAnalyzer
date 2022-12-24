@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using PublicTransportCrawler.Adapters;
 using PublicTransportCrawler.Storage.Factories;
 using PublicTransportCrawler.Vehicles.Adapters;
 
@@ -13,13 +14,15 @@ namespace PublicTransportCrawler.Storage.Repositories;
 internal class VehicleDelayDataRepository : IVehicleDelayDataRepository
 {
     private readonly IOptions<MyServerOptions> _myServerOptions;
-    private IDbContextFactory _dbContextFactory;
+    private readonly IDbContextFactory _dbContextFactory;
+    private ITimeProvider _timeProvider;
     private readonly IMapper _mapper;
     
-    public VehicleDelayDataRepository(IAutoMapperConfiguration _autoMapperConfiguration, IOptions<MyServerOptions> myServerOptions, IDbContextFactory dbContextFactory)
+    public VehicleDelayDataRepository(IAutoMapperConfiguration _autoMapperConfiguration, IOptions<MyServerOptions> myServerOptions, IDbContextFactory dbContextFactory, ITimeProvider timeProvider)
     {
         _myServerOptions = myServerOptions;
         _dbContextFactory = dbContextFactory;
+        _timeProvider = timeProvider;
         _mapper = new AutoMapperConfiguration().GetMapper();
     }
     
@@ -37,6 +40,7 @@ internal class VehicleDelayDataRepository : IVehicleDelayDataRepository
         if (current == null)
         {
             var result = _mapper.Map<VehicleDelayData, VehicleDelayStorage>(vehicleDelayData);
+            result.Timestamp = _timeProvider.GetCurrentTime();
             await _context.AddAsync(result);
         }
         else
