@@ -1,30 +1,38 @@
+using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using PublicTransportCrawler.Storage.Factories;
 using PublicTransportCrawler.Vehicles.Adapters;
 
 namespace PublicTransportCrawler.Storage.Repositories;
 
 internal class VehicleDelayDataRepository : IVehicleDelayDataRepository
 {
-    private readonly DataContext _context;
+    private readonly IOptions<MyServerOptions> _myServerOptions;
+    private IDbContextFactory _dbContextFactory;
     private readonly IMapper _mapper;
-    public VehicleDelayDataRepository(IOptions<MyServerOptions> options, IAutoMapperConfiguration _autoMapperConfiguration)
+    
+    public VehicleDelayDataRepository(IAutoMapperConfiguration _autoMapperConfiguration, IOptions<MyServerOptions> myServerOptions, IDbContextFactory dbContextFactory)
     {
+        _myServerOptions = myServerOptions;
+        _dbContextFactory = dbContextFactory;
         _mapper = new AutoMapperConfiguration().GetMapper();
-        _context = new DataContext(options.Value);
     }
     
     public async Task AddAsync(VehicleDelayData vehicleDelayData)
     {
-        await _context.AddAsync(vehicleDelayData);
-        await _context.SaveChangesAsync();
+        var context = _dbContextFactory.Create();
+        await context.AddAsync(vehicleDelayData);
+        await context.SaveChangesAsync();
     }
 
     public async Task AddOrUpdateAsync(VehicleDelayData vehicleDelayData)
     {
+        var _context = _dbContextFactory.Create();
         var current = await _context.VehicleDelayDataStorage.SingleOrDefaultAsync(x => x.TripId == vehicleDelayData.TripId);
         if (current == null)
         {
@@ -49,7 +57,7 @@ internal class VehicleDelayDataRepository : IVehicleDelayDataRepository
             }
             _context.VehicleDelayDataStorage.Update(current);
         }
-    
         await _context.SaveChangesAsync();
+
     }
 }

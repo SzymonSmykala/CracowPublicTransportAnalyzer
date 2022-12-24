@@ -6,6 +6,7 @@ using PublicTransportCrawler.Storage.Repositories;
 using PublicTransportCrawler.Stops;
 using PublicTransportCrawler.Stops.Adapters;
 using PublicTransportCrawler.Storage;
+using PublicTransportCrawler.Storage.Factories;
 using PublicTransportCrawler.Vehicles;
 using PublicTransportCrawler.Vehicles.Adapters;
 using PublicTransportCrawler.Vehicles.Chain;
@@ -22,8 +23,12 @@ public class Startup : FunctionsStartup
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddSingleton<IVehicleService, VehicleService>();
         builder.Services.AddSingleton<IVehicleRequestFactory, VehicleRequestFactory>();
-        builder.Services.AddSingleton<IDelayDataRepository, DelayDataRepository>();
         
+        builder.Services.AddSingleton<MyServerOptions>();
+        builder.Services.AddSingleton<IDbContextFactory, DbContextFactory>();
+        builder.Services.AddSingleton<IDelayDataRepository, DelayDataRepository>();
+        builder.Services.AddSingleton<IVehicleDelayDataRepository, VehicleDelayDataRepository>();
+
         var configuration = BuildConfiguration(builder.GetContext().ApplicationRootPath);
         builder.Services.AddAppConfiguration(configuration);
         builder.Services.AddSingleton<IStopService, StopService>();
@@ -31,10 +36,10 @@ public class Startup : FunctionsStartup
         builder.Services.AddSingleton<IDelayCalculator, DelayCalculator>();
         builder.Services.AddSingleton<IVehiclePathService, VehiclePathService>();
         builder.Services.AddSingleton<IStopDataRequestFactory, StopDataRequestFactory>();
-        builder.Services.AddSingleton<IVehicleDelayDataRepository, VehicleDelayDataRepository>();
         builder.Services.AddAutoMapper(typeof(VehicleDelayData), typeof(VehicleDelayStorage));
         builder.Services.AddSingleton<ILineCrawlerExecutor, LineCrawlerExecutor>();
         builder.Services.AddSingleton<ILineCrawlerStepFactory, LineCrawlerStepFactory>();
+
     }
     
     private IConfiguration BuildConfiguration(string applicationRootPath)

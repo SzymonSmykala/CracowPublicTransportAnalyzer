@@ -11,16 +11,16 @@ namespace PublicTransportCrawler.Storage.Repositories;
 
 internal class DelayDataRepository : IDelayDataRepository
 {
-    private readonly DataContext _context;
+    private readonly DbContext _context;
 
-    public DelayDataRepository(IOptions<MyServerOptions> options)
+    public DelayDataRepository(DbContext context)
     {
-        _context = new DataContext(options.Value);
+        _context = context;
     }
 
     public async Task InsertSampleDataAsync()
     {
-        _context.Add<DelayStorage>(new DelayStorage()
+        _context.Add(new DelayStorage()
         {
             DelayInMinutes = 10,
             StopId = "XD",

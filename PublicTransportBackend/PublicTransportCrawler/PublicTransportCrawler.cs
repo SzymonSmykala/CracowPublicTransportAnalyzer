@@ -118,16 +118,18 @@ namespace PublicTransportCrawler
             ILogger log)
         {
             // List<VehicleDelayData> result = await _currentVehicleStateFacade.GetCurrentStateForAsync(173);
-            try
+            var tasks = new List<Task>
             {
-                await _lineCrawlerExecutor.ExecuteAsync("173");
-            }
-            catch(Exception e)
-            {
-                log.LogError(e.ToString());
-                throw;
-            }
+                _lineCrawlerExecutor.ExecuteAsync("173"),
+                _lineCrawlerExecutor.ExecuteAsync("194"),
+                _lineCrawlerExecutor.ExecuteAsync("307"),
+                _lineCrawlerExecutor.ExecuteAsync("182"),
+                _lineCrawlerExecutor.ExecuteAsync("304"),
+                _lineCrawlerExecutor.ExecuteAsync("503"),
+                _lineCrawlerExecutor.ExecuteAsync("130"),
+            };
 
+            await Task.WhenAll(tasks);
             return new OkObjectResult("FAKE OK ");
         }
 
