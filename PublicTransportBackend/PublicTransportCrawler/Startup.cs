@@ -21,25 +21,25 @@ public class Startup : FunctionsStartup
     {
         builder.Services.AddHttpClient();
         builder.Services.AddHttpContextAccessor();
-        builder.Services.AddSingleton<IVehicleService, VehicleService>();
-        builder.Services.AddSingleton<IVehicleRequestFactory, VehicleRequestFactory>();
+        builder.Services.AddScoped<IVehicleService, VehicleService>();
+        builder.Services.AddScoped<IVehicleRequestFactory, VehicleRequestFactory>();
         
-        builder.Services.AddSingleton<MyServerOptions>();
-        builder.Services.AddSingleton<IDbContextFactory, DbContextFactory>();
-        builder.Services.AddSingleton<IDelayDataRepository, DelayDataRepository>();
-        builder.Services.AddSingleton<IVehicleDelayDataRepository, VehicleDelayDataRepository>();
+        builder.Services.AddScoped<MyServerOptions>();
+        builder.Services.AddScoped<IDbContextFactory, DbContextFactory>();
+        builder.Services.AddScoped<IDelayDataRepository, DelayDataRepository>();
+        builder.Services.AddScoped<IVehicleDelayDataRepository, VehicleDelayDataRepository>();
 
         var configuration = BuildConfiguration(builder.GetContext().ApplicationRootPath);
         builder.Services.AddAppConfiguration(configuration);
-        builder.Services.AddSingleton<IStopService, StopService>();
+        builder.Services.AddScoped<IStopService, StopService>();
         builder.Services.AddScoped<ICurrentVehicleStateFacade, CurrentVehicleStateFacade>();
         builder.Services.AddSingleton<IDelayCalculator, DelayCalculator>();
-        builder.Services.AddSingleton<IVehiclePathService, VehiclePathService>();
-        builder.Services.AddSingleton<IStopDataRequestFactory, StopDataRequestFactory>();
+        builder.Services.AddScoped<IVehiclePathService, VehiclePathService>();
+        builder.Services.AddScoped<IStopDataRequestFactory, StopDataRequestFactory>();
         builder.Services.AddAutoMapper(typeof(VehicleDelayData), typeof(VehicleDelayStorage));
-        builder.Services.AddSingleton<ILineCrawlerExecutor, LineCrawlerExecutor>();
-        builder.Services.AddSingleton<ILineCrawlerStepFactory, LineCrawlerStepFactory>();
-        builder.Services.AddSingleton<ITimeProvider, TimeProvider>();
+        builder.Services.AddScoped<ILineCrawlerExecutor, LineCrawlerExecutor>();
+        builder.Services.AddScoped<ILineCrawlerStepFactory, LineCrawlerStepFactory>();
+        builder.Services.AddScoped<ITimeProvider, TimeProvider>();
     }
     
     private IConfiguration BuildConfiguration(string applicationRootPath)

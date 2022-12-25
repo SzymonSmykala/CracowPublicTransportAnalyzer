@@ -27,12 +27,10 @@ public class FetchDataAndSaveStep : AbstractStep
 
     protected override async Task ExecuteInnerAsync(CrawlingContext context)
     {
-        var listOfResults = new List<VehicleDelayData>();
         foreach (var q in context.Vehicles)
         {
             var result = await CreateVehicleDelayData(q, context.LineNumber);
             await _vehicleDelayDataRepository.AddOrUpdateAsync(result);
-            // listOfResults.Add(result);
             Console.WriteLine(result);
         }
     }

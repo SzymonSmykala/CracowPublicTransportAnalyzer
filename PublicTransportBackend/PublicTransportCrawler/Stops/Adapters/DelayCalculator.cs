@@ -27,6 +27,7 @@ internal class DelayCalculator : IDelayCalculator
     {
         if (actualTime == null || plannedTime == null)
         {
+            Console.WriteLine("ACTUAL TIME OR PLANNET TIME IS NULL");
             return 0;
         }
         
