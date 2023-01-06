@@ -40,6 +40,7 @@ public class Startup : FunctionsStartup
         builder.Services.AddScoped<ILineCrawlerExecutor, LineCrawlerExecutor>();
         builder.Services.AddScoped<ILineCrawlerStepFactory, LineCrawlerStepFactory>();
         builder.Services.AddScoped<ITimeProvider, TimeProvider>();
+        builder.Services.AddScoped<IVehicleDelayDataProvider, VehicleDelayDataProvider>();
     }
     
     private IConfiguration BuildConfiguration(string applicationRootPath)
