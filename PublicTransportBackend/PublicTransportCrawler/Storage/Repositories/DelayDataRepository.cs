@@ -18,19 +18,6 @@ internal class DelayDataRepository : IDelayDataRepository
         _context = context;
     }
 
-    public async Task InsertSampleDataAsync()
-    {
-        _context.Add(new DelayStorage()
-        {
-            DelayInMinutes = 10,
-            StopId = "XD",
-            Timestamp = DateTime.Now,
-            TripId = "123",
-            id = Guid.NewGuid().ToString()
-        });
-        await _context.SaveChangesAsync();
-    }
-
     public async Task AddOrUpdateDelayDataAsync(string tripId, string stopId, TimeSpan currentDelay, long lineNumber, string direction)
     {
         DelayStorage queried = await _context.DelayStorages.SingleOrDefaultAsync(x => x.TripId == tripId);

@@ -34,6 +34,5 @@ public class DbContext : Microsoft.EntityFrameworkCore.DbContext
         modelBuilder.Entity<VehicleDelayStorage>().HasDiscriminator();
         modelBuilder.Entity<VehicleDelayStorage>().HasPartitionKey(nameof(VehicleDelayStorage.PartitionKey));
         modelBuilder.Entity<VehicleDelayStorage>().ToContainer("vehicleDelay");
-        // modelBuilder.Entity<DelayStorage>().Property(x => x.id).pr
     }
 }
