@@ -7,4 +7,6 @@ namespace PublicTransportCrawler.Stops;
 public interface IStopService
 {
     Task<List<Actual>> GetRondoGrunwaldzkieDataAsync();
+
+    Task<List<Actual>> GetDataForStopByAsync(string stopId);
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Net.Http;
 
-namespace PublicTransportCrawler.Vehicles;
+namespace PublicTransportCrawler.Vehicles.Factories;
 
 internal class VehicleRequestFactory : IVehicleRequestFactory
 {
@@ -10,6 +10,15 @@ internal class VehicleRequestFactory : IVehicleRequestFactory
         return new HttpRequestMessage()
         {
             RequestUri = new Uri(Constants.TramsEndpoint),
+            Method = HttpMethod.Get
+        };
+    }
+
+    public HttpRequestMessage CreateGetBusesRequest()
+    {
+        return new HttpRequestMessage()
+        {
+            RequestUri = new Uri(Constants.BusesEndpoint),
             Method = HttpMethod.Get
         };
     }

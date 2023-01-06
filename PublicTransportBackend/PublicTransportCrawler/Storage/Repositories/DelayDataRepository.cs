@@ -11,27 +11,14 @@ namespace PublicTransportCrawler.Storage.Repositories;
 
 internal class DelayDataRepository : IDelayDataRepository
 {
-    private readonly DataContext _context;
+    private readonly DbContext _context;
 
-    public DelayDataRepository(IOptions<MyServerOptions> options)
+    public DelayDataRepository(DbContext context)
     {
-        _context = new DataContext(options.Value);
+        _context = context;
     }
 
-    public async Task InsertSampleDataAsync()
-    {
-        _context.Add<DelayStorage>(new DelayStorage()
-        {
-            DelayInMinutes = 10,
-            StopId = "XD",
-            Timestamp = DateTime.Now,
-            TripId = "123",
-            id = Guid.NewGuid().ToString()
-        });
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task AddOrUpdateDelayData(string tripId, string stopId, TimeSpan currentDelay, long lineNumber, string Direction)
+    public async Task AddOrUpdateDelayDataAsync(string tripId, string stopId, TimeSpan currentDelay, long lineNumber, string direction)
     {
         DelayStorage queried = await _context.DelayStorages.SingleOrDefaultAsync(x => x.TripId == tripId);
 
@@ -45,7 +32,7 @@ internal class DelayDataRepository : IDelayDataRepository
                 id = Guid.NewGuid().ToString(),
                 Timestamp = DateTime.UtcNow,
                 LineNumber = lineNumber,
-                Direction = Direction
+                Direction = direction
             });
         }
         else

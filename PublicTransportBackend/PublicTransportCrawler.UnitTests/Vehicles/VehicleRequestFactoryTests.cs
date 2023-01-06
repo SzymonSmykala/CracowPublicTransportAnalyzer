@@ -1,5 +1,6 @@
 using FluentAssertions;
 using PublicTransportCrawler.Vehicles;
+using PublicTransportCrawler.Vehicles.Factories;
 
 namespace PublicTransportCrawler.UnitTests.Vehicles;
 
