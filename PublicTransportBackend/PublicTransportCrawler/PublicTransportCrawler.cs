@@ -130,7 +130,7 @@ namespace PublicTransportCrawler
         // }
 
         [FunctionName("DelayCrawlerV2TimeTriggered")]
-        public async Task RunTriggerAsync([TimerTrigger("*/1 4-22 * * *")] TimerInfo myTimer, ILogger log)
+        public async Task RunTriggerAsync([TimerTrigger("*/5 4-22 * * *")] TimerInfo myTimer, ILogger log)
         {
             var tasks = new List<Task>
             {
