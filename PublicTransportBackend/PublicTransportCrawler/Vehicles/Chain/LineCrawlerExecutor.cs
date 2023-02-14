@@ -26,6 +26,15 @@ internal class LineCrawlerExecutor : ILineCrawlerExecutor
         {
             LineNumber = lineNumber
         };
-        await firstStep.ExecuteAsync(context);
+        try
+        {
+            await firstStep.ExecuteAsync(context);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"{nameof(LineCrawlerExecutor)} failed. Error: {e.Message}");
+        }
+        
+
     }
 }
