@@ -8,13 +8,13 @@ namespace PublicTransportCrawler.Vehicles;
 
 public class VehicleService : IVehicleService
 {
-    private readonly HttpClient _httpClient;
+    private static HttpClient _httpClient;
     private readonly IVehicleRequestFactory _vehicleRequestFactory;
 
     public VehicleService(IHttpClientFactory httpClientFactory, IVehicleRequestFactory vehicleRequestFactory)
     {
         _vehicleRequestFactory = vehicleRequestFactory;
-        _httpClient = httpClientFactory.CreateClient();
+        _httpClient ??= httpClientFactory.CreateClient(nameof(VehicleService));
     }
 
     public async Task<List<DTO.Vehicle>> GetAllTramsAsync()

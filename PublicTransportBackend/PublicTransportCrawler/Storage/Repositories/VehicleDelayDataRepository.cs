@@ -35,13 +35,13 @@ internal class VehicleDelayDataRepository : IVehicleDelayDataRepository
 
     public async Task AddOrUpdateAsync(VehicleDelayData vehicleDelayData)
     {
-        var _context = _dbContextFactory.Create();
-        var current = await _context.VehicleDelayDataStorage.SingleOrDefaultAsync(x => x.TripId == vehicleDelayData.TripId);
+        var context = _dbContextFactory.Create();
+        var current = await context.VehicleDelayDataStorage.SingleOrDefaultAsync(x => x.TripId == vehicleDelayData.TripId);
         if (current == null)
         {
             var result = _mapper.Map<VehicleDelayData, VehicleDelayStorage>(vehicleDelayData);
             result.Timestamp = _timeProvider.GetCurrentTime();
-            await _context.AddAsync(result);
+            await context.AddAsync(result);
         }
         else
         {
@@ -59,9 +59,9 @@ internal class VehicleDelayDataRepository : IVehicleDelayDataRepository
                     stopToEdit.DelayInMinutes = newStop.DelayInMinutes;
                 }
             }
-            _context.VehicleDelayDataStorage.Update(current);
+            context.VehicleDelayDataStorage.Update(current);
         }
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
     }
 }

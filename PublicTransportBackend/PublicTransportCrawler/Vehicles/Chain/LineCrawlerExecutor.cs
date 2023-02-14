@@ -32,7 +32,7 @@ internal class LineCrawlerExecutor : ILineCrawlerExecutor
         }
         catch (Exception e)
         {
-            Console.WriteLine($"{nameof(LineCrawlerExecutor)} failed. Error: {e.Message}");
+            Console.WriteLine($"{nameof(LineCrawlerExecutor)} failed. Error: {e.Message} Line: {lineNumber}");
         }
         
 
