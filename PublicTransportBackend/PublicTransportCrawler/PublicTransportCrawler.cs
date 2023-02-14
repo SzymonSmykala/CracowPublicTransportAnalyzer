@@ -26,19 +26,22 @@ namespace PublicTransportCrawler
         private readonly IDelayDataRepository _delayDataRepository;
         private readonly MyServerOptions _options;
         private readonly ILineCrawlerExecutor _lineCrawlerExecutor;
+        private readonly IVehicleService _vehicleService;
 
         public PublicTransportCrawler(IHttpClientFactory httpClientFactory,
             IDelayDataRepository delayDataRepository,
             IOptions<MyServerOptions> options,
             IStopService stopService,
             IDelayCalculator delayCalculator,
-            ILineCrawlerExecutor lineCrawlerExecutor)
+            ILineCrawlerExecutor lineCrawlerExecutor,
+            IVehicleService vehicleService)
         {
             _client = httpClientFactory.CreateClient();
             _delayDataRepository = delayDataRepository;
             _stopService = stopService;
             _delayCalculator = delayCalculator;
             _lineCrawlerExecutor = lineCrawlerExecutor;
+            _vehicleService = vehicleService;
             _options = options.Value;
         }
 
@@ -56,13 +59,13 @@ namespace PublicTransportCrawler
                 try
                 {
                     var diff = _delayCalculator.Execute(x);
-                    Console.WriteLine($"Delay in minutes: {diff.TotalMinutes} | Line: {x.PatternText} | Direction: {x.Direction} ");
+                    // Console.WriteLine($"Delay in minutes: {diff.TotalMinutes} | Line: {x.PatternText} | Direction: {x.Direction} ");
                     _delayDataRepository.AddOrUpdateDelayDataAsync(x.TripId, "3338", diff, x.PatternText, x.Direction).GetAwaiter().GetResult();
                 }
                 catch(Exception e)
                 {
-                    Console.WriteLine($"Message: {e.Message}");
-                    Console.WriteLine($"Actual: {x.ActualTime} | Planned: {x.PlannedTime}");
+                    // Console.WriteLine($"Message: {e.Message}");
+                    // Console.WriteLine($"Actual: {x.ActualTime} | Planned: {x.PlannedTime}");
                 }
             
             });
@@ -72,15 +75,18 @@ namespace PublicTransportCrawler
         [FunctionName("DelayCrawlerV2TimeTriggered")]
         public async Task RunTriggerAsync([TimerTrigger("*/5 4-22 * * *")] TimerInfo myTimer, ILogger log)
         {
-            var tasks = new List<Task>
-            {
-                _lineCrawlerExecutor.ExecuteAsync("173"),
-                _lineCrawlerExecutor.ExecuteAsync("194"),
-                _lineCrawlerExecutor.ExecuteAsync("307"),
-                _lineCrawlerExecutor.ExecuteAsync("182"),
-            };
 
-            await Task.WhenAll(tasks);
+            try
+            {
+                var allLines = await _vehicleService.GetAllBusesLinesNamesAsync();
+                Console.WriteLine($"Number of lines: {allLines.Count}");
+                var tasks = allLines.Select(line => _lineCrawlerExecutor.ExecuteAsync(line)).ToList();
+                await Task.WhenAll(tasks);
+            }
+            catch(Exception e)
+            {
+                log.LogError("Delay Crawler failed. Message: {Message}", e.Message);
+            }
         }
     }
 }

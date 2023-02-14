@@ -7,4 +7,6 @@ public interface IVehicleService
 {
     Task<List<DTO.Vehicle>> GetAllTramsAsync();
     Task<List<DTO.Vehicle>> GetAllBusesAsync();
+
+    Task<List<string>> GetAllBusesLinesNamesAsync();
 }

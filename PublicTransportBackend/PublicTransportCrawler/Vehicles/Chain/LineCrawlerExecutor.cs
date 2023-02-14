@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 namespace PublicTransportCrawler.Vehicles.Chain;
@@ -13,6 +14,7 @@ internal class LineCrawlerExecutor : ILineCrawlerExecutor
 
     public async Task ExecuteAsync(string lineNumber)
     {
+        // Console.WriteLine($"Executing for: {lineNumber}");
         var builder = new ChainBuilder();
         var firstStep = builder
             .Add(_stepFactory.CreateGetAllBusesStep())
@@ -24,6 +26,15 @@ internal class LineCrawlerExecutor : ILineCrawlerExecutor
         {
             LineNumber = lineNumber
         };
-        await firstStep.ExecuteAsync(context);
+        try
+        {
+            await firstStep.ExecuteAsync(context);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"{nameof(LineCrawlerExecutor)} failed. Error: {e.Message}");
+        }
+        
+
     }
 }
