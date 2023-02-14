@@ -21,7 +21,7 @@ public class FetchDataAndSaveStep : AbstractStep
         {
             var result = await _vehicleDelayDataProvider.CreateVehicleDelayData(vehicle, context.LineNumber);
             await _vehicleDelayDataRepository.AddOrUpdateAsync(result);
-            Console.WriteLine(result);
+            // \Console.WriteLine(result);
         }
     }
 }

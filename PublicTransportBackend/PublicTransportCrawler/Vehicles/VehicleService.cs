@@ -34,4 +34,15 @@ public class VehicleService : IVehicleService
         var vehicleResponse = VehicleResponse.FromJson(resultAsString);
         return vehicleResponse.Vehicles.ToList();
     }
+
+    public async Task<List<string>> GetAllBusesLinesNamesAsync()
+    {
+        var vehicles = await GetAllBusesAsync();
+
+        var result = vehicles.Select(x => x.Name).Where(x => x != null).ToList();
+
+        var spllited = result.Select(r => r.Split(" ")[0]).ToList().Distinct().ToList();
+
+        return spllited;
+    }
 }

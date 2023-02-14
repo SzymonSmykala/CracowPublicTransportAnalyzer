@@ -3,7 +3,7 @@ using System.Net.Http;
 
 namespace PublicTransportCrawler.Vehicles.Factories;
 
-internal class VehicleRequestFactory : IVehicleRequestFactory
+public class VehicleRequestFactory : IVehicleRequestFactory
 {
     public HttpRequestMessage CreateGetTramRequest()
     {
